@@ -27,11 +27,24 @@ function App() {
           <p>
             <span>Number of Records</span> <span>{records}</span>
           </p>
-          <p>
-            <span>Last Retrieved Value</span>{" "}
-            <span>{JSON.stringify(lastRetrieved)}</span>
-          </p>
         </article>
+
+        <section>
+          <h3>Last Retrieved Record</h3>
+          {lastRetrieved && (
+            <>
+              <p>
+                Artist Name: <span>{lastRetrieved.artist_name}</span>
+              </p>
+              <p>
+                Song Title: <span>{lastRetrieved.full_title}</span>
+              </p>
+              <p>
+                Time Added: <span>{lastRetrieved.added_at}</span>
+              </p>
+            </>
+          )}
+        </section>
       </div>
       <MainView
         allArtists={allArtists}
