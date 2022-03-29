@@ -5,13 +5,13 @@ import { getFirestore } from "firebase/firestore";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDLUOSm-uPC5oHt7AhnZyc6fjb_8YADzCY",
-  authDomain: "genius-songs.firebaseapp.com",
-  projectId: "genius-songs",
-  storageBucket: "genius-songs.appspot.com",
-  messagingSenderId: "601134979828",
-  appId: "1:601134979828:web:c51feda5eb29a62df49ca1",
-  measurementId: "G-B2280DSQX4",
+  apiKey: process.env.REACT_APP_FB_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOM,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MSG_SENDER_ID,
+  appId: process.env.REACT_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 // Initialize Firebase

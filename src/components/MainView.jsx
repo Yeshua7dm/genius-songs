@@ -1,13 +1,24 @@
 import React from "react";
 import { db } from "../fireBaseConfig";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const MainView = ({ allArtists, PageBreak }) => {
+const INTERVAL = process.env.REACT_APP_INTERVAL;
+
+const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
   const [artists, setArtists] = useState([]);
   const [artiste, setArtiste] = useState(null);
   const [check, setCheck] = useState(true);
+  const [checkInterval, setCheckInterval] = useState(false);
+  const [lastLatest, setLastLatest] = useState(null);
+  const [currentLatest, setCurrentLatest] = useState(null);
 
   useEffect(() => {
     const addArtist = async (one_artist) => {
@@ -45,31 +56,52 @@ const MainView = ({ allArtists, PageBreak }) => {
       if (allSongs.empty) {
         console.log("there are no songs in the DB yet");
         setCheck(false);
+      } else {
+        let songs = [];
+        allSongs.forEach((song) => {
+          songs.push({ id: song.id, ...song.data() });
+        });
+        console.log(songs);
+        console.log(songs[songs.length - 1]);
+        const song = songs[songs.length - 1];
+        getRecordCount(songs.length);
+        setLastLatest(song);
+        setCheck(true);
+        getLastSong(song);
+        setCurrentLatest(null);
       }
     };
+
     // run the function
     getArtists();
     checkForSongs();
-  }, [allArtists]);
+    setCheckInterval(false);
+  }, [allArtists, checkInterval]);
 
-  const addNewSong = async (song) => {
-    try {
-      const addSong = await addDoc(collection(db, "songs"), song);
-      console.log("Document written: ", {
-        id: addSong.id,
-        ...addSong.data(),
-      });
-      return addSong.data();
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  };
+  useEffect(() => {
+    const addNewSong = async (song) => {
+      try {
+        const addSong = await addDoc(collection(db, "songs"), song);
+        console.log("Document written: ", { id: addSong.id, ...song });
+        setCurrentLatest(song);
+        getLastSong(song);
+        const allSongs = await getDocs(collection(db, "songs"));
+        getRecordCount(allSongs.size);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    };
 
-  const getNewSong = async () => {
-    let page, index, chosen;
-    console.log(artists);
+    const updateArtist = async () => {
+      const artistDoc = doc(db, "artists", artiste.id);
+      const toUpdate = { count: artiste.count + 1 };
+      await updateDoc(artistDoc, toUpdate);
+    };
 
-    if (artiste) {
+    const NewSong = async () => {
+      let page, index, chosen;
+      console.log(artists);
+
       const artistID = artiste.artist_id;
       const count = artiste.count;
       if (count === 0 || count % PageBreak === 0) {
@@ -103,26 +135,29 @@ const MainView = ({ allArtists, PageBreak }) => {
             artist_id: artistID,
             song_id: song.id,
             full_title: song.full_title,
-            artist_name: song.primary_artist.name,
+            artist_name: artiste.name,
             added_at: Date(),
           };
+          addNewSong(chosen);
 
+          updateArtist();
           console.log(chosen);
         });
+    };
+
+    if (artiste && artists) {
+      NewSong();
     }
-  };
+  }, [PageBreak, artiste, artists]);
 
   return (
-    <div>
-      {check ? <p>Songs Found</p> : <p>No songs found</p>}
-
-      <div>
-        <p>
-          <button>Get new song</button>
-        </p>
-        <button>Display all artists</button>
-      </div>
-    </div>
+    <>
+      {!check && <p>No songs found</p>}
+      {currentLatest &&
+        setInterval(() => {
+          setCheckInterval(true);
+        }, INTERVAL)}
+    </>
   );
 };
 
