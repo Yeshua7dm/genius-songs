@@ -10,15 +10,13 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const INTERVAL = process.env.REACT_APP_INTERVAL;
+const INTERVAL = Number(process.env.REACT_APP_INTERVAL);
 
 const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
   const [artists, setArtists] = useState([]);
   const [artiste, setArtiste] = useState(null);
   const [check, setCheck] = useState(true);
-  const [checkInterval, setCheckInterval] = useState(false);
-  const [lastLatest, setLastLatest] = useState(null);
-  const [currentLatest, setCurrentLatest] = useState(null);
+  const [checkInterval, setCheckInterval] = useState(true);
 
   /***
    * Get the Artists in the DB
@@ -41,7 +39,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
     // get all the artists and create them if they do not exist
     const getArtists = async () => {
       const querySnapshot = await getDocs(collection(db, "artists"));
-      if (!querySnapshot.empty || querySnapshot.size === 3) {
+      if (!querySnapshot.empty) {
         let artists = [];
 
         querySnapshot.forEach((doc) => {
@@ -51,7 +49,6 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
         artists.sort((a, b) => a.count - b.count);
         setArtiste(artists[0]);
       } else {
-        console.log("nothing found");
         allArtists.forEach((artist) => {
           addArtist(artist);
         });
@@ -62,7 +59,6 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
     const checkForSongs = async () => {
       const allSongs = await getDocs(collection(db, "songs"));
       if (allSongs.empty) {
-        console.log("there are no songs in the DB yet");
         setCheck(false);
       } else {
         let songs = [];
@@ -70,21 +66,19 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
           songs.push({ id: song.id, ...song.data() });
         });
         songs.sort((a, b) => new Date(a.added_at) - new Date(b.added_at));
-        console.log(songs);
-
         getRecordCount(songs.length);
-        setLastLatest(songs[songs.length - 1]);
         setCheck(true);
         getLastSong(songs[songs.length - 1]);
-        setCurrentLatest(null);
       }
     };
 
     // run the function
-    getArtists();
-    checkForSongs();
-    setCheckInterval(false);
-  }, [allArtists]);
+    if (checkInterval) {
+      setCheckInterval(false);
+      getArtists();
+      checkForSongs();
+    }
+  });
 
   /**
    * get a new song
@@ -94,9 +88,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
   useEffect(() => {
     const addNewSong = async (song) => {
       try {
-        const addSong = await addDoc(collection(db, "songs"), song);
-        console.log("Document written: ", { id: addSong.id, ...song });
-        setCurrentLatest(song);
+        await addDoc(collection(db, "songs"), song);
         getLastSong(song);
         const allSongs = await getDocs(collection(db, "songs"));
         getRecordCount(allSongs.size);
@@ -113,12 +105,10 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
 
     const NewSong = async () => {
       let page, index, chosen;
-      console.log(artists);
 
       const artistID = artiste.artist_id;
       const count = artiste.count;
       if (count === 0 || count % PageBreak === 0) {
-        console.log(count);
         index = 0;
         page = count === 0 ? 1 : count / PageBreak + 1;
       } else if (count % PageBreak !== 0) {
@@ -141,9 +131,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
           }
         )
         .then((resp) => {
-          console.log(resp.data);
           const song = resp.data.response.songs[index];
-          console.log(index, song, PageBreak, page);
           chosen = {
             artist_id: artistID,
             song_id: song.id,
@@ -152,26 +140,20 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
             added_at: Date(),
           };
           addNewSong(chosen);
-
-          updateArtist();
           console.log(chosen);
+          updateArtist();
+          setTimeout(() => {
+            setCheckInterval(true);
+          }, INTERVAL);
         });
     };
 
-    // if (artiste && artists) {
-    //   NewSong();
-    // }
-  }, [PageBreak, artiste, artists]);
+    if (!checkInterval) {
+      NewSong();
+    }
+  }, [artiste]);
 
-  return (
-    <>
-      {!check && <p>No songs found</p>}
-      {/* {currentLatest &&
-        setInterval(() => {
-          setCheckInterval(true);
-        }, INTERVAL)} */}
-    </>
-  );
+  return <>{!check && <p>No songs found</p>}</>;
 };
 
 export default MainView;
