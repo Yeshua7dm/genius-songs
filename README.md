@@ -44,6 +44,8 @@ Ensure that you have carried out the sections above before running the project
  Then do the following
 1. Change the REACT_APP_INTERVAL in the .env file to 60000 so that it runs every minute not every 10 seconds
 2. Run the application with `npm start`
+    This runs the app in the development mode.\
+    Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Available Scripts
 
@@ -51,8 +53,6 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
