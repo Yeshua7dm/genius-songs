@@ -139,7 +139,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
             artist_name: song.artist_names,
             added_at: Date(),
             image: song.header_image_thumbnail_url,
-            page_review: song.stats.pageviews,
+            page_reviews: song.stats.pageviews,
           };
 
           addNewSong(chosen);

@@ -23,10 +23,15 @@ function App() {
           <h1>Genius Artists Retrieval</h1>
         </div>
         <nav>
-          <p>
-            <span>Last Update @</span>
-            <span>{lastCheck}</span>
-          </p>
+          {lastCheck ? (
+            <p>
+              <span>Last Update @</span>
+              <span>{lastCheck}</span>
+            </p>
+          ) : (
+            <p>No records in the DB yet</p>
+          )}
+
           <p>
             <span>Number of Records</span>
             <span>{records}</span>
@@ -40,18 +45,20 @@ function App() {
             <section>
               <img src={lastRetrieved.image} alt={lastRetrieved.full_title} />
             </section>
-            <section class="song_details">
+            <section className="song_details">
               <p>
-                <span class="label">Full Title</span>
-                <span class="detail">{lastRetrieved.full_title}</span>
+                <span className="label">Full Title</span>
+                <span className="detail">{lastRetrieved.full_title}</span>
               </p>
               <p>
-                <span class="label">Artist</span>
-                <span class="detail">{lastRetrieved.artist_name}</span>
+                <span className="label">Artist</span>
+                <span className="detail">{lastRetrieved.artist_name}</span>
               </p>
               <p>
-                <span class="label">Page Reviews</span>
-                <span class="detail">{lastRetrieved.page_reviews} reviews</span>
+                <span className="label">Page Reviews</span>
+                <span className="detail">
+                  {lastRetrieved.page_reviews} reviews
+                </span>
               </p>
             </section>
           </div>
