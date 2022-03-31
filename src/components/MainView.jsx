@@ -136,9 +136,12 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
             artist_id: artistID,
             song_id: song.id,
             full_title: song.full_title,
-            artist_name: artiste.name,
+            artist_name: song.artist_names,
             added_at: Date(),
+            image: song.header_image_thumbnail_url,
+            page_review: song.stats.pageviews,
           };
+
           addNewSong(chosen);
           console.log(chosen);
           updateArtist();

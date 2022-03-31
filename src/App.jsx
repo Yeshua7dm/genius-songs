@@ -18,34 +18,46 @@ function App() {
   };
   return (
     <div className="App">
-      <div>
-        <h2>Genius Artists Application</h2>
-        <article>
+      <header>
+        <div>
+          <h1>Genius Artists Retrieval</h1>
+        </div>
+        <nav>
           <p>
-            <span>Time of Last Check</span> <span>{lastCheck}</span>
+            <span>Last Update @</span>
+            <span>{lastCheck}</span>
           </p>
           <p>
-            <span>Number of Records</span> <span>{records}</span>
+            <span>Number of Records</span>
+            <span>{records}</span>
           </p>
-        </article>
+        </nav>
+      </header>
+      {lastRetrieved && (
+        <main>
+          <h2>Last Retrieved Record</h2>
+          <div>
+            <section>
+              <img src={lastRetrieved.image} alt={lastRetrieved.full_title} />
+            </section>
+            <section class="song_details">
+              <p>
+                <span class="label">Full Title</span>
+                <span class="detail">{lastRetrieved.full_title}</span>
+              </p>
+              <p>
+                <span class="label">Artist</span>
+                <span class="detail">{lastRetrieved.artist_name}</span>
+              </p>
+              <p>
+                <span class="label">Page Reviews</span>
+                <span class="detail">{lastRetrieved.page_reviews} reviews</span>
+              </p>
+            </section>
+          </div>
+        </main>
+      )}
 
-        <section>
-          <h3>Last Retrieved Record</h3>
-          {lastRetrieved && (
-            <>
-              <p>
-                Artist Name: <span>{lastRetrieved.artist_name}</span>
-              </p>
-              <p>
-                Song Title: <span>{lastRetrieved.full_title}</span>
-              </p>
-              <p>
-                Time Added: <span>{lastRetrieved.added_at}</span>
-              </p>
-            </>
-          )}
-        </section>
-      </div>
       <MainView
         allArtists={allArtists}
         PageBreak={BREAKER}
