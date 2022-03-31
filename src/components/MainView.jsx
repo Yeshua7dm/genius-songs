@@ -154,7 +154,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
     }
   }, [artiste]);
 
-  return <>{!check && <p>No songs found</p>}</>;
+  return <></>;
 };
 
 export default MainView;
