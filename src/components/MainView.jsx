@@ -13,7 +13,6 @@ import axios from "axios";
 const INTERVAL = Number(process.env.REACT_APP_INTERVAL);
 
 const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
-  const [artists, setArtists] = useState([]);
   const [artiste, setArtiste] = useState(null);
   const [check, setCheck] = useState(true);
   const [checkInterval, setCheckInterval] = useState(true);
@@ -45,7 +44,6 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
         querySnapshot.forEach((doc) => {
           artists.push({ ...doc.data(), id: doc.id });
         });
-        setArtists(artists);
         artists.sort((a, b) => a.count - b.count);
         setArtiste(artists[0]);
       } else {
