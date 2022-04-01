@@ -22,21 +22,7 @@ function App() {
         <div>
           <h1>Genius Artists Retrieval</h1>
         </div>
-        <nav>
-          {lastCheck ? (
-            <p>
-              <span>Last Update @</span>
-              <span>{lastCheck}</span>
-            </p>
-          ) : (
-            <p>No records in the DB yet</p>
-          )}
-
-          <p>
-            <span>Number of Records</span>
-            <span>{records}</span>
-          </p>
-        </nav>
+        {!lastCheck && <p>No records in the DB yet</p>}
       </header>
       {lastRetrieved && (
         <main>
@@ -63,6 +49,19 @@ function App() {
             </section>
           </div>
         </main>
+      )}
+      {lastRetrieved && (
+        <nav>
+          <p>
+            <span className="nav_label">Last Update @</span>
+            <span className="nav_detail">{lastCheck}</span>
+          </p>
+
+          <p>
+            <span className="nav_label">Number of Records</span>
+            <span className="nav_detail">{records}</span>
+          </p>
+        </nav>
       )}
 
       <MainView

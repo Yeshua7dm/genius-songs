@@ -130,6 +130,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
         )
         .then((resp) => {
           const song = resp.data.response.songs[index];
+          const reviews = song.stats.pageviews ? song.stats.pageviews : 0;
           chosen = {
             artist_id: artistID,
             song_id: song.id,
@@ -137,7 +138,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
             artist_name: song.artist_names,
             added_at: Date(),
             image: song.header_image_thumbnail_url,
-            page_reviews: song.stats.pageviews,
+            page_reviews: reviews,
           };
 
           addNewSong(chosen);
