@@ -22,10 +22,10 @@ Google's firebase helps frontend developers focus solely on the frontend and not
 6. Replace the comments on the lines with the actual values from the SDK settings
 
 With this done, your firebase App is ready to go, one last thing though
-7. Click on Firestore Database under the created project (on the sidebar)
+1. Click on Firestore Database under the created project (on the sidebar)
  NB: This is where you will view your data
-8. Click on rules, edit the rules
-9. Change the line `allow read, write: if false;` to `allow read, write: if true;`
+2. Click on rules, edit the rules
+3. Change the line `allow read, write: if false;` to `allow read, write: if true;`
 This will allow you access to CRUD data in your database
 
 
@@ -43,45 +43,23 @@ This is important as the credentials are needed to fetch data from rapidAPI
 Ensure that you have carried out the sections above before running the project
  Then do the following
 1. Change the REACT_APP_INTERVAL in the .env file to 60000 so that it runs every minute not every 10 seconds
-2. Run the application with `npm start`
-    This runs the app in the development mode.\
-    Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### This project will be run from docker
+1. First ensure you have docker installed on your machine.
+2. cd to the application folder in your terminal and type in `docker-compose up`.
+This will load up the **docker-compose.yml** file whoch will build the app from the **Dockerfile** in the root folder and create a service named *react-ui* with a container **songs-ui**.
 
-### `npm test`
+3. Run `docker-compose build` to build the app in the application into your docker installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Run `docker-compose up` to get the app running and then view in [localhost](http://localhost:3000)
 
-### `npm run build`
+4. The app should run successfully at this point
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### To close the app and stop docker-compose
+Run `docker-compose stop`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+cheers!
