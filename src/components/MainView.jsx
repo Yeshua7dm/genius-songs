@@ -55,7 +55,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
         getArtists();
       }
     };
-
+    console.log(check);
     const checkForSongs = async () => {
       const allSongs = await getDocs(collection(db, "songs"));
       if (allSongs.empty) {
@@ -78,7 +78,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
       getArtists();
       checkForSongs();
     }
-  });
+  }, [check, checkInterval, allArtists, getRecordCount, getLastSong]);
 
   /**
    * get a new song
@@ -157,7 +157,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
     if (!checkInterval) {
       NewSong();
     }
-  }, [artiste]);
+  }, [PageBreak, artiste, checkInterval, getLastSong, getRecordCount]);
 
   return <></>;
 };
