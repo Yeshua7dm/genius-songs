@@ -38,6 +38,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
     // get all the artists and create them if they do not exist
     const getArtists = async () => {
       const querySnapshot = await getDocs(collection(db, "artists"));
+      console.log(querySnapshot);
       if (!querySnapshot.empty) {
         let artists = [];
 
@@ -49,6 +50,7 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
       } else {
         allArtists.forEach((artist) => {
           addArtist(artist);
+          console.log(artist);
         });
         getArtists();
       }
@@ -113,6 +115,8 @@ const MainView = ({ allArtists, PageBreak, getRecordCount, getLastSong }) => {
         page = Math.floor(count / PageBreak) + 1;
         index = count % PageBreak;
       }
+
+      console.log(count, page, PageBreak, index);
 
       await axios
         .get(

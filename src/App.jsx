@@ -2,7 +2,7 @@ import { allArtists } from "./artists";
 import MainView from "./components/MainView";
 import { useState } from "react";
 
-const BREAKER = 25;
+const BREAKER = 20;
 function App() {
   const [lastCheck, setLastCheck] = useState("");
   const [records, setRecords] = useState(0);

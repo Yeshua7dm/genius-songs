@@ -1,9 +1,11 @@
 version: '3'
 services:
-   react-ui:
+  react-ui:
     build:
       context: .
     ports:
-      - "3000:3000"
+      - "3001:3000"    
+    # environment:
+    #   - REACT_APP_INTERVAL=10000
     container_name: songs-ui
     stdin_open: true
